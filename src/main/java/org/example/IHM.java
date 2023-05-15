@@ -30,7 +30,7 @@ public class IHM {
                     listTodos();
                     break;
                 case "3":
-
+                    updateTodo();
                     break;
                 case "4":
                     removeTodo();
@@ -76,6 +76,7 @@ public class IHM {
 
         for (Listing l : listings){
             System.out.println(l.getTitre());
+            System.out.println(l.isStatut());
         }
 
         em.close();
@@ -99,6 +100,27 @@ public class IHM {
             em.getTransaction().rollback();
             throw new RuntimeException(e);
         }
+        em.close();
+
+    }
+
+    private void updateTodo(){
+        System.out.print("Merci de saisir l'id de la TODO : ");
+        int id = scanner.nextInt();
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        Listing listing = em.find(Listing.class,id);
+        listing.setStatut(!listing.isStatut());
+
+        try {
+            em.persist(listing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException(e);
+        }
+
         em.close();
 
     }

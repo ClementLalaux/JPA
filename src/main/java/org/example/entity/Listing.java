@@ -10,11 +10,18 @@ import javax.persistence.*;
         private int id;
         private String titre;
 
+        private boolean statut = false;
+
         public Listing() {
         }
 
         public Listing(String titre) {
             this.titre = titre;
+        }
+
+        public Listing(String titre, boolean statut) {
+            this.titre = titre;
+            this.statut = statut;
         }
 
         public int getId() {
@@ -31,6 +38,14 @@ import javax.persistence.*;
 
         public void setTitre(String titre) {
             this.titre = titre;
+        }
+
+        public boolean isStatut() {
+            return statut;
+        }
+
+        public void setStatut(boolean statut) {
+            this.statut = statut;
         }
 
         @Override
