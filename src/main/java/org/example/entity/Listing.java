@@ -11,6 +11,9 @@ import javax.persistence.*;
         private String titre;
 
         private boolean statut = false;
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name= "listing_info_id",referencedColumnName = "id")
+        private ListingInfo listingInfo;
 
         public Listing() {
         }
@@ -22,6 +25,12 @@ import javax.persistence.*;
         public Listing(String titre, boolean statut) {
             this.titre = titre;
             this.statut = statut;
+        }
+
+        public Listing(String titre, boolean statut, ListingInfo listingInfo) {
+            this.titre = titre;
+            this.statut = statut;
+            this.listingInfo = listingInfo;
         }
 
         public int getId() {
@@ -46,6 +55,14 @@ import javax.persistence.*;
 
         public void setStatut(boolean statut) {
             this.statut = statut;
+        }
+
+        public ListingInfo getListingInfo() {
+            return listingInfo;
+        }
+
+        public void setListingInfo(ListingInfo listingInfo) {
+            this.listingInfo = listingInfo;
         }
 
         @Override

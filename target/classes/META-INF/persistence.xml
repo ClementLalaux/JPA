@@ -13,6 +13,9 @@
 
         <!--        Ici spécifier les classes d'entités qui seront gérées par cette unité de persistance-->
 
+        <class>org.example.entity.ListingInfo</class>
+        <class>org.example.entity.Listing</class>
+
         <properties>
             <!--            Spécifie le nom de la classe du pilote JDBC utilisé pour la connexion à la base de données.-->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
