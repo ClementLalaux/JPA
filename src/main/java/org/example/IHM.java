@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.entity.Categorie;
 import org.example.entity.Listing;
 import org.example.entity.ListingInfo;
 import org.example.entity.Utilisateur;
@@ -49,6 +50,15 @@ public class IHM {
                 case "7":
                     removeUser();
                     break;
+                case "8":
+                    createCategorie();
+                    break;
+                case "9":
+                    removeCategorie();
+                    break;
+                case "10":
+                    listTodosByCategorie();
+                    break;
             }
         }while (!choix.equals("0"));
         emf.close();
@@ -61,6 +71,10 @@ public class IHM {
         System.out.println("5 - Ajouter un utilisateur");
         System.out.println("6 - Lister TODOS par utilisateur");
         System.out.println("7 - Supprimer utilisateur");
+        System.out.println("8 - Ajouter une catégorie");
+        System.out.println("9 - Supprimer une catégorie");
+        System.out.println("10 - Afficher les taches d'un catégorie");
+        System.out.println("11 - Afficher les taches d'un catégorie");
         System.out.println("0 - EXIT");
     }
 
@@ -120,6 +134,49 @@ public class IHM {
 
     }
 
+    private void createCategorie(){
+        Categorie categorie = null;
+        System.out.print("Merci de saisir le titre de la catégorie : ");
+        String titre = scanner.nextLine();
+
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        categorie = new Categorie(titre);
+
+        try {
+            em.persist(categorie);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException(e);
+        }
+
+        em.close();
+
+    }
+
+    private void removeCategorie(){
+        System.out.print("Merci de saisir l'id de la categorie a supprimer : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        Categorie categorie = em.find(Categorie.class,id);
+
+        try {
+            em.remove(categorie);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException(e);
+        }
+        em.close();
+
+    }
+
     private Utilisateur findUser(){
         Utilisateur utilisateur = null;
         EntityManager em = emf.createEntityManager();
@@ -174,6 +231,73 @@ public class IHM {
         }
 
         em.close();
+    }
+
+    private void listTodosByCategorie(){
+        System.out.print("Merci de saisir l'id de la categorie a afficher : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Listing> listings = null;
+        Categorie categorie = null;
+        EntityManager em = emf.createEntityManager();
+
+        Query query = em.createQuery("select c from Categorie c WHERE id = :idCategorie",Listing.class);
+        query.setParameter("idCategorie",id);
+        categorie = (Categorie) query.getSingleResult();
+
+        listings = categorie.getListings();
+
+        for (Listing l : listings){
+            System.out.println(l.getUtilisateur().getNomUtilisateur());
+            System.out.println(l.getTitre());
+        }
+
+        em.close();
+    }
+
+    private void addTodoInCategorie(){
+        Listing listing = null;
+        Categorie categorie = null;
+
+        System.out.print("Merci de saisir l'id du TODO a mettre dans une catégorie : ");
+        int idTodo = scanner.nextInt();
+        scanner.nextLine();
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Query query = em.createQuery("select p from Listing p where p.id = :id");
+            query.setParameter("id",idTodo);
+            listing = (Listing) query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Entrez l'id de la catégorie");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        try {
+            Query query = em.createQuery("select p from Categorie p where p.id = :id");
+            query.setParameter("id",idTodo);
+            categorie = (Categorie) query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        listing.addCategorie(categorie);
+
+        try {
+            em.persist(listing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException(e);
+        }
+
+        em.close();
+
     }
 
     private void removeTodo(){
