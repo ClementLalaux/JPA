@@ -74,7 +74,8 @@ public class IHM {
         System.out.println("8 - Ajouter une catégorie");
         System.out.println("9 - Supprimer une catégorie");
         System.out.println("10 - Afficher les taches d'un catégorie");
-        System.out.println("11 - Afficher les taches d'un catégorie");
+        System.out.println("11 - Ajouter une catégorie à une tache");
+        System.out.println("12 - Supprimer une catégorie à une tache");
         System.out.println("0 - EXIT");
     }
 
