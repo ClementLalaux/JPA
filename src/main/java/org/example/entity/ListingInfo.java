@@ -17,6 +17,7 @@ public class ListingInfo {
     @Column(nullable = false)
     private int priorite;
 
+
     public ListingInfo() {
     }
 

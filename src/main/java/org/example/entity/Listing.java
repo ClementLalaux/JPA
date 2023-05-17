@@ -2,76 +2,97 @@ package org.example.entity;
 
 import javax.persistence.*;
 
-    @Entity
-    @Table(name = "listing")
-    public  class Listing {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
-        private String titre;
+@Entity
+@Table(name = "listing")
+public  class Listing {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String titre;
 
-        private boolean statut = false;
-        @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name= "listing_info_id",referencedColumnName = "id")
-        private ListingInfo listingInfo;
+    private boolean statut = false;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name= "listing_info_id",referencedColumnName = "id")
+    private ListingInfo listingInfo;
 
-        public Listing() {
-        }
+    @ManyToOne
+    @JoinColumn(name="utilisateur_id")
+    private Utilisateur utilisateur;
 
-        public Listing(String titre) {
-            this.titre = titre;
-        }
+    public Listing() {
+    }
 
-        public Listing(String titre, boolean statut) {
-            this.titre = titre;
-            this.statut = statut;
-        }
+    public Listing(String titre) {
+        this.titre = titre;
+    }
 
-        public Listing(String titre, boolean statut, ListingInfo listingInfo) {
-            this.titre = titre;
-            this.statut = statut;
-            this.listingInfo = listingInfo;
-        }
+    public Listing(String titre, boolean statut) {
+        this.titre = titre;
+        this.statut = statut;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public Listing(String titre, boolean statut, ListingInfo listingInfo) {
+        this.titre = titre;
+        this.statut = statut;
+        this.listingInfo = listingInfo;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public Listing(String titre, boolean statut, ListingInfo listingInfo, Utilisateur utilisateur) {
+        this.titre = titre;
+        this.statut = statut;
+        this.listingInfo = listingInfo;
+        this.utilisateur = utilisateur;
+    }
 
-        public String getTitre() {
-            return titre;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public void setTitre(String titre) {
-            this.titre = titre;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public boolean isStatut() {
-            return statut;
-        }
+    public String getTitre() {
+        return titre;
+    }
 
-        public void setStatut(boolean statut) {
-            this.statut = statut;
-        }
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
 
-        public ListingInfo getListingInfo() {
-            return listingInfo;
-        }
+    public boolean isStatut() {
+        return statut;
+    }
 
-        public void setListingInfo(ListingInfo listingInfo) {
-            this.listingInfo = listingInfo;
-        }
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
 
-        @Override
-        public String toString() {
-            return "Listing{" +
-                    "id=" + id +
-                    ", titre='" + titre + '\'' +
-                    '}';
-        }
+    public ListingInfo getListingInfo() {
+        return listingInfo;
+    }
+
+    public void setListingInfo(ListingInfo listingInfo) {
+        this.listingInfo = listingInfo;
     }
 
 
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    @Override
+    public String toString() {
+        return "Listing{" +
+                "id=" + id +
+                ", titre='" + titre + '\'' +
+                ", statut=" + statut +
+                ", listingInfo=" + listingInfo +
+                ", utilisateur=" + utilisateur +
+                '}';
+    }
+}
